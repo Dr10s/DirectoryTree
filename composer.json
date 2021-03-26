@@ -1,0 +1,17 @@
+{
+    "name": "Dr10s/DirectoryTree",
+    "description": "This class can create and read directories by tree methodology",
+    "minimum-stability": "stable",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "Dr10s",
+            "email": "andrey.mrthod@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "Dr10s\\DirectoryTree\\": "src/"
+    }
+}
