@@ -12,6 +12,9 @@
     "require": {
     },
     "autoload": {
-        "Dr10s\\DirectoryTree\\": "src/"
+        "psr-4": { "Dr10s\\DirectoryTree\\": "src/" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     }
 }
