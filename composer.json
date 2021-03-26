@@ -1,5 +1,5 @@
 {
-    "name": "Dr10s/DirectoryTree",
+    "name": "dr10s/directory-tree",
     "description": "This class can create and read directories by tree methodology",
     "minimum-stability": "stable",
     "license": "GPL-3.0-only",
