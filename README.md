@@ -20,5 +20,6 @@
 ```
 ```
  $directoryTree = new DirectoryTree('./Files');
- $directory = $directoryTree->findDirectoryWithFile(md5('file_name'.microtime()), 'txt');
+ $fileHash = md5('file_name'.microtime());
+ $directory = $directoryTree->findDirectoryWithFile($fileHash, 'txt');
 ```
