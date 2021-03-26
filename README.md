@@ -18,3 +18,7 @@
    );
    
 ```
+```
+ $directoryTree = new DirectoryTree('./Files');
+ $directory = $directoryTree->findDirectoryWithFile(md5('file_name'.microtime()), 'txt');
+```
