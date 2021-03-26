@@ -13,12 +13,20 @@ class DirectoryTree
     {
         $this->mainDirectory = $mainDirectory;
         $this->filesPerDirectory = $filesPerDirectory;
+
+        if (!is_writable($this->mainDirectory)) {
+            throw new \RuntimeException(sprintf('Directory "%s" not writable', $this->mainDirectory));
+        }
+
+        if ($filesPerDirectory === 0) {
+            throw new \RuntimeException('FilesPerDirectory should be greater then 0.');
+        }
     }
 
-    public function addDirectory(string $fileHash, string $fileExtension): string
+    public function addDirectoryForFile(string $fileHash, string $fileExtension): string
     {
         $hashPos = self::HASH_START;
-        $mainDirectory = $this->getMainDirectoryFromHash($$fileHash, $hashPos);
+        $mainDirectory = $this->getMainDirectoryFromHash($fileHash, $hashPos);
         $this->createByPath($mainDirectory);
 
         while (
@@ -33,17 +41,17 @@ class DirectoryTree
         return $mainDirectory;
     }
 
-    public function getDirectory(string $fileHash, string $fileExtension): ?string
+    public function findDirectoryWithFile(string $fileHash, string $fileExtension): ?string
     {
         $hashStart = self::HASH_START;
         $mainDirectory = $this->getMainDirectoryFromHash($fileHash, $hashStart);
         $fileName = $fileHash.'.'.$fileExtension;
 
-        while (!file_exists($mainDirectory . '/'. $fileName) && $hashStart < strlen($fileHash)) {
+        while (!file_exists(sprintf('%s/%s', $mainDirectory, $fileName)) && $hashStart < strlen($fileHash)) {
             $mainDirectory .= '/' . substr($fileHash, $hashStart += self::HASH_STEP, self::HASH_STEP);
         }
 
-        return file_exists($mainDirectory . '/'. $fileName) ? $mainDirectory . '/'. $fileName : null;
+        return file_exists(sprintf('%s/%s', $mainDirectory, $fileName)) ? $mainDirectory : null;
     }
 
     private function createByPath(string $path): bool
@@ -57,14 +65,15 @@ class DirectoryTree
 
     private function getMainDirectoryFromHash(string $hash, int &$hashStart): string
     {
-        $firstDirectory = substr($hash, $hashStart, self::HASH_STEP);
-        $secondDirectory = substr($hash, $hashStart += self::HASH_STEP, self::HASH_STEP);
-
-        return  $this->mainDirectory .'/'. $firstDirectory . '/' . $secondDirectory;
+        return  sprintf('%s/%s/%s',
+            $this->mainDirectory,
+            substr($hash, $hashStart, self::HASH_STEP),
+            substr($hash, $hashStart += self::HASH_STEP, self::HASH_STEP)
+        );
     }
 
     private function checkIsFileExist(string $path, string $fileHash, string $fileExtension): bool
     {
-        return file_exists($path . '/'. $fileHash.'.'.$fileExtension);
+        return file_exists(sprintf('%s/%s.%s', $path, $fileHash, $fileExtension));
     }
 }

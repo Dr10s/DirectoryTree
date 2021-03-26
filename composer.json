@@ -10,6 +10,8 @@
         }
     ],
     "require": {
+        "php": ">=7.3",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": { "Dr10s\\DirectoryTree\\": "src/" },
